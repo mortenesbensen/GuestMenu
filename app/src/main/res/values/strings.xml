@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GuestList</string>
+    <string name="arrival_text_name">Arrival:</string>
+    <string name="title_activity_guest">GuestActivity</string>
+</resources>
