@@ -1,6 +1,8 @@
 package bsdb.itu.dk.guestlist;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,12 +18,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements GuestListFragment.GuestListItemClicked {
 
-    private List<Guest> guests;
-    private List<Guest> filteredList;
-
+    // Key til vores guest id
     public static final String GUEST_ID = "bsdb.itu.dk.guestlist.guestid";
+
+    // Holder styr på om vi har adgang til en eller to fragments
+    private boolean isDualPanel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,90 +32,43 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        GuestStore.initialize();
-        guests = GuestStore.getAll();
-        filteredList = new ArrayList<Guest>();
-        filteredList.addAll(guests);
+        isDualPanel = findViewById(R.id.fragment_container) == null;
 
-        ListView guestListView = (ListView) findViewById(R.id.guest_list);
-        final GuestListAdapter adapter = new GuestListAdapter();
+        // Hvis vi ikke har adgang til 2 fragments skal vi tilføje en fragment til vores container
+        if(!isDualPanel) {
 
-        guestListView.setAdapter(adapter);
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
 
-        final EditText searchField = (EditText) findViewById(R.id.search_field);
-        searchField.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                filteredList.clear();
-
-                String searchString = searchField.getText().toString().toLowerCase();
-
-                for(Guest g : guests) {
-                    if(g.getName().toLowerCase().contains(searchString)) {
-                        filteredList.add(g);
-                    }
-                }
-
-                adapter.notifyDataSetChanged();
-
-                return false;
-            }
-        });
-
-        guestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Guest g = guests.get(position);
-
-                Intent i = new Intent(MainActivity.this, GuestActivity.class);
-                i.putExtra(GUEST_ID, g.getId());
-
-                startActivity(i);
-            }
-        });
-
+            GuestListFragment fragment = new GuestListFragment();
+            transaction.add(R.id.fragment_container, fragment);
+            transaction.commit();
+        }
     }
 
+    @Override
+    public void onGuestListItemClick(int guestId) {
 
-    class GuestListAdapter extends BaseAdapter {
+        // Hvis vi har adagng til vores detalje fragment kan vi nøjes med at opdatere navnet. Hvis ikke skal vi lave en ny
+        // fragment og tilføje den i stedet for vores liste
+        if(isDualPanel) {
+            DetailsFragment fragment = (DetailsFragment) getFragmentManager().findFragmentById(R.id.details_fragment);
+            fragment.updateGuest(guestId);
+        } else {
+            DetailsFragment fragment = new DetailsFragment();
+            Bundle b = new Bundle();
+            b.putInt(GUEST_ID, guestId);
 
-        @Override
-        public int getCount() {
-            return filteredList.size();
-        }
+            FragmentManager manager = getFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
 
-        @Override
-        public Object getItem(int position) {
-            return filteredList.get(position);
-        }
+            fragment.setArguments(b);
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+            transaction.replace(R.id.fragment_container, fragment);
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+            transaction.addToBackStack(null);
 
-            View view = convertView;
-
-            if(view == null) {
-                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-                view = inflater.inflate(R.layout.guest_list_item, null);
-            }
-
-            TextView guestName = (TextView) view.findViewById(R.id.guest_name);
-            TextView arrival = (TextView) view.findViewById(R.id.guest_arrival);
-
-            Guest g = filteredList.get(position);
-
-            if(g != null) {
-                guestName.setText(g.getName());
-                arrival.setText(g.getSimpleDate());
-            }
-
-            return view;
+            transaction.commit();
         }
     }
 }
