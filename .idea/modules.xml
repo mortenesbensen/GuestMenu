@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GuestListFragments.iml" filepath="$PROJECT_DIR$/GuestListFragments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GuestMenu.iml" filepath="$PROJECT_DIR$/GuestMenu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
