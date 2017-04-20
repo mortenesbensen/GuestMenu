@@ -39,6 +39,9 @@ public class GuestListFragment extends Fragment {
     private List<Guest> guests;
     private List<Guest> filteredList;
 
+    // Adapter til vores liste
+    private GuestListAdapter adapter;
+
     public GuestListFragment() {
 
         GuestStore.initialize();
@@ -68,7 +71,7 @@ public class GuestListFragment extends Fragment {
 
         // Sæt en adapter på vores liste af gæster
         ListView guestListView = (ListView) getActivity().findViewById(R.id.guest_list);
-        final GuestListAdapter adapter = new GuestListAdapter();
+        adapter = new GuestListAdapter();
         guestListView.setAdapter(adapter);
 
         // Live søgning på gæst

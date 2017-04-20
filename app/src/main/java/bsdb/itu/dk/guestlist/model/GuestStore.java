@@ -23,9 +23,9 @@ public class GuestStore {
         Date tomorrow = cal.getTime();
 
         // Dummy data
-        Guest g1 = new Guest(1, "Morten Esbensen");
-        Guest g2 = new Guest(2, "Lisa Simpson");
-        Guest g3 = new Guest(3, "Barack Obama");
+        Guest g1 = new Guest(0, "Morten Esbensen");
+        Guest g2 = new Guest(1, "Lisa Simpson");
+        Guest g3 = new Guest(2, "Barack Obama");
 
         int room1 = 1;
         int room2 = 2;
