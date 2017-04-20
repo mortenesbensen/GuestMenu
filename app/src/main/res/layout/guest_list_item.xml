@@ -9,19 +9,11 @@
         android:textStyle="bold"
         android:id="@+id/guest_name"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/guest_name"
-        android:textSize="20dp"
-        android:id="@+id/arrival_text"
-        android:text="@string/arrival_text_name"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:id="@+id/guest_arrival"
-        android:layout_toEndOf="@id/arrival_text"
         android:layout_below="@id/guest_name"/>
 </RelativeLayout>

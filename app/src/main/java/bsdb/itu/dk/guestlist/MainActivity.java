@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements GuestListFragment.GuestLis
             GuestListFragment fragment = new GuestListFragment();
             transaction.add(R.id.fragment_container, fragment);
             transaction.commit();
+
         }
     }
 
@@ -61,13 +62,9 @@ public class MainActivity extends Activity implements GuestListFragment.GuestLis
 
             FragmentManager manager = getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-
             fragment.setArguments(b);
-
             transaction.replace(R.id.fragment_container, fragment);
-
             transaction.addToBackStack(null);
-
             transaction.commit();
         }
     }

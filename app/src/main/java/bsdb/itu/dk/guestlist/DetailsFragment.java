@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import bsdb.itu.dk.guestlist.model.Guest;
+import bsdb.itu.dk.guestlist.model.GuestStore;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +25,6 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
@@ -31,6 +33,7 @@ public class DetailsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // Hvis dette fragment blev startet med et argument henter vi det (gæste id)
         if(getArguments() != null) {
             int guestId = getArguments().getInt(MainActivity.GUEST_ID);
             updateGuest(guestId);
